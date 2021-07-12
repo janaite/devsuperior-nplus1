@@ -1,5 +1,7 @@
 package dev.janaite.nplus1.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +21,7 @@ public class ProductResource {
 	@Autowired
 	private ProductService service;
 	
-	@GetMapping
+	@GetMapping()
 	public ResponseEntity<Page<ProductDTO>> findAll(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size
@@ -27,6 +29,13 @@ public class ProductResource {
 		
 		PageRequest pageRequest = PageRequest.of(page, size);
 		Page<ProductDTO> list = service.find(pageRequest);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping(value = "/alt")
+	public ResponseEntity<List<ProductDTO>> findAll2() {
+		
+		List<ProductDTO> list = service.find2();
 		return ResponseEntity.ok(list);
 	}
 }
