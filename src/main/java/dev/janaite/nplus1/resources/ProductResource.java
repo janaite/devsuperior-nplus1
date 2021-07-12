@@ -20,22 +20,29 @@ public class ProductResource {
 
 	@Autowired
 	private ProductService service;
-	
+
 	@GetMapping()
-	public ResponseEntity<Page<ProductDTO>> findAll(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "size", defaultValue = "10") Integer size
-			) {
-		
+	public ResponseEntity<Page<ProductDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size) {
+
 		PageRequest pageRequest = PageRequest.of(page, size);
 		Page<ProductDTO> list = service.find(pageRequest);
 		return ResponseEntity.ok(list);
 	}
-	
+
 	@GetMapping(value = "/alt")
 	public ResponseEntity<List<ProductDTO>> findAll2() {
-		
 		List<ProductDTO> list = service.find2();
+		return ResponseEntity.ok(list);
+	}
+
+	@GetMapping(value = "/altpaged")
+	public ResponseEntity<Page<ProductDTO>> findAll3(@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size) {
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+		Page<ProductDTO> list = service.find3(pageRequest);
+
 		return ResponseEntity.ok(list);
 	}
 }

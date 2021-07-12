@@ -30,4 +30,14 @@ public class ProductService {
 		List<Product> list = repository.findProductCategories();
 		return list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
 	}
+
+	@Transactional(readOnly = true)
+	public Page<ProductDTO> find3(PageRequest pageRequest) {
+		Page<Product> page = repository.findAll(pageRequest);
+		// put entities into cache
+		repository.findProductCategoriesLimited(page.stream().collect(Collectors.toList()));
+		
+		return page.map(x -> new ProductDTO(x));
+	}
+
 }
